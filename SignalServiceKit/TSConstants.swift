@@ -195,7 +195,7 @@ private class TSConstantsProduction: TSConstantsProtocol {
     // checking earlier enclaves.
     public let svr2PreviousEnclaves: [MrEnclave] = []
 
-    public let applicationGroup = "group." + Bundle.main.bundleIdPrefix + ".signal.group"
+    public let applicationGroup = "group." + Bundle.main.bundleIdPrefix + ".signal"
 
     /// We *might* need to clear credentials (or perform some other migration)
     /// when this value changes, depending on how it's changing. If you do need
@@ -250,7 +250,7 @@ private class TSConstantsStaging: TSConstantsProtocol {
     // checking earlier enclaves.
     public let svr2PreviousEnclaves: [MrEnclave] = []
 
-    public let applicationGroup = "group." + Bundle.main.bundleIdPrefix + ".signal.group.staging"
+    public let applicationGroup = "group." + Bundle.main.bundleIdPrefix + ".signal.staging"
 
     /// We *might* need to clear credentials (or perform some other migration)
     /// when this value changes, depending on how it's changing. If you do need
