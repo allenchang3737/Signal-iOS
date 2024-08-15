@@ -109,15 +109,15 @@ class AVVolumeButtonObservation {
 
     public var isEnabled = true {
         didSet {
-            if #available(iOS 17.2, *) {
-                eventInteraction?.isEnabled = isEnabled
-            } else {
+//            if #available(iOS 17.2, *) {
+//                eventInteraction?.isEnabled = isEnabled
+//            } else {
                 if isEnabled && !oldValue {
                     beginLegacyObservation()
                 } else if !isEnabled && oldValue {
                     stopLegacyObservation()
                 }
-            }
+//            }
         }
     }
 
@@ -128,81 +128,81 @@ class AVVolumeButtonObservation {
         self.observer = observer
         self.capturePreviewView = capturePreviewView
 
-        if #available(iOS 17.2, *) {
-            beginObservation()
-        } else {
+//        if #available(iOS 17.2, *) {
+//            beginObservation()
+//        } else {
             beginLegacyObservation()
-        }
+//        }
     }
 
     deinit {
-        if #available(iOS 17.2, *) {
-            stopObservation()
-        } else {
+//        if #available(iOS 17.2, *) {
+//            stopObservation()
+//        } else {
             stopLegacyObservation()
-        }
+//        }
     }
 
     // Stored properties can't have @available conditions;
     // store as Any and do casting in a computed var.
     private var _eventInteraction: Any?
 
-    @available(iOS 17.2, *)
-    private var eventInteraction: AVCaptureEventInteraction? {
-        get { _eventInteraction as? AVCaptureEventInteraction }
-        set { _eventInteraction = newValue }
-    }
-
-    @available(iOS 17.2, *)
-    private func beginObservation() {
-        let eventInteraction = AVCaptureEventInteraction(
-            primary: { [weak self] volumeDownEvent in
-                switch volumeDownEvent.phase {
-                case .began:
-                    self?.didPressVolumeButton(with: .down)
-                case .ended:
-                    self?.didReleaseVolumeButton(with: .down)
-                case .cancelled:
-                    fallthrough
-                @unknown default:
-                    return
-                }
-            },
-            secondary: { [weak self] volumeUpEvent in
-                switch volumeUpEvent.phase {
-                case .began:
-                    self?.didPressVolumeButton(with: .up)
-                case .ended:
-                    self?.didReleaseVolumeButton(with: .up)
-                case .cancelled:
-                    fallthrough
-                @unknown default:
-                    return
-                }
-            }
-        )
-        eventInteraction.isEnabled = isEnabled
-        capturePreviewView?.addInteraction(eventInteraction)
-        self.eventInteraction = eventInteraction
-    }
+//    @available(iOS 17.2, *)
+//    private var eventInteraction: AVCaptureEventInteraction? {
+//        get { _eventInteraction as? AVCaptureEventInteraction }
+//        set { _eventInteraction = newValue }
+//    }
+//
+//    @available(iOS 17.2, *)
+//    private func beginObservation() {
+//        let eventInteraction = AVCaptureEventInteraction(
+//            primary: { [weak self] volumeDownEvent in
+//                switch volumeDownEvent.phase {
+//                case .began:
+//                    self?.didPressVolumeButton(with: .down)
+//                case .ended:
+//                    self?.didReleaseVolumeButton(with: .down)
+//                case .cancelled:
+//                    fallthrough
+//                @unknown default:
+//                    return
+//                }
+//            },
+//            secondary: { [weak self] volumeUpEvent in
+//                switch volumeUpEvent.phase {
+//                case .began:
+//                    self?.didPressVolumeButton(with: .up)
+//                case .ended:
+//                    self?.didReleaseVolumeButton(with: .up)
+//                case .cancelled:
+//                    fallthrough
+//                @unknown default:
+//                    return
+//                }
+//            }
+//        )
+//        eventInteraction.isEnabled = isEnabled
+//        capturePreviewView?.addInteraction(eventInteraction)
+//        self.eventInteraction = eventInteraction
+//    }
 
     private func beginLegacyObservation() {
         LegacyGlobalVolumeButtonObserver.shared?.addObserver(observer: self)
     }
 
-    @available(iOS 17.2, *)
-    private func stopObservation() {
-        self.eventInteraction?.isEnabled = false
-        if let eventInteraction {
-            capturePreviewView?.removeInteraction(eventInteraction)
-        }
-        self.eventInteraction = nil
-
-        if let longPressingButton {
-            observer?.didCancelLongPressVolumeButton(with: longPressingButton)
-            resetLongPress()
-        }
-    }
+//    @available(iOS 17.2, *)
+//    private func stopObservation() {
+//        self.eventInteraction?.isEnabled = false
+//        if let eventInteraction {
+//            capturePreviewView?.removeInteraction(eventInteraction)
+//        }
+//        self.eventInteraction = nil
+//
+//        if let longPressingButton {
+//            observer?.didCancelLongPressVolumeButton(with: longPressingButton)
+//            resetLongPress()
+//        }
+//    }
 
     private func stopLegacyObservation() {
         LegacyGlobalVolumeButtonObserver.shared?.removeObserver(self)

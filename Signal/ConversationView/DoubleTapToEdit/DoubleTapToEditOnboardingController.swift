@@ -36,8 +36,12 @@ struct DoubleTapToEditOnboardingController {
             sheet.addAction(.acknowledge)
             sheet.onDismiss = {
                 db.asyncWrite { store.setBool(true, key: Keys.hasSeenOnboarding, transaction: $0) }
-                MainActor.assumeIsolated {
-                    completionHandler()
+                if #available(iOS 17.0, *) {
+                    MainActor.assumeIsolated {
+                        completionHandler()
+                    }
+                } else {
+                    // Fallback on earlier versions
                 }
             }
             presentationContext.present(sheet, animated: animated)
